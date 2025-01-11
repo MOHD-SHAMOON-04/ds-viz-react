@@ -112,7 +112,7 @@ A React-based interactive web application for visualizing fundamental data struc
 - Interact with the data structures by adding or removing nodes.
 - Observe the animations to understand how the data structures evolve.
 
-[Try Now](https://your-deployment-link.com)
+[Try Now](https://ds-viz-react.vercel.app/)
 
 ---
 
