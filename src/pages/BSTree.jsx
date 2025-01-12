@@ -65,7 +65,7 @@ function BSTree() {
         }
       }
     }
-    alert("Value already exists, no duplicates allowed");
+    displayPopup(`Value ${valueTobeInserted} already exists`, "bg-red-500");
   }
 
   function deleteNodeByBST(userInput) {
