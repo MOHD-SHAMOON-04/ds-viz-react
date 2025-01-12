@@ -1,16 +1,19 @@
 import List from "../components/List";
-import IDSFrom from "../components/IDSFrom";
+import IDSForm from "../components/IDSForm";
 import ClearBtn from "../components/ClearBtn";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function LinkedList() {
 
-  const [popup, setPopup] = useState({ isOpen: false, text: 'A Centered Div', color: 'bg-amber-400' });
+  const [errorModal, setErrorModal] = useState({
+    isOpen: false,
+    text: "An error occurred.",
+  });
 
-  function displayPopup(text, color) {
-    setPopup({ isOpen: true, text: text, color: color });
-    setTimeout(() => setPopup({ popupOpen: false, popupText: '', color: 'bg-amber-400' }), 1500);
+  function displayErrorModal(text) {
+    setErrorModal({ isOpen: true, text: text });
+    setTimeout(() => setErrorModal({ isOpen: false, text: "" }), 1500);
   }
 
   function generateAddress() {
@@ -37,6 +40,10 @@ export default function LinkedList() {
 
   function insertIntoList(value) {
     const intVal = parseInt(value);
+    if (isNaN(intVal)) {
+      displayErrorModal("Invalid input! Please enter a number.");
+      return;
+    }
     if (list.length === 0) {
       const newNode = {
         value: intVal,
@@ -62,8 +69,12 @@ export default function LinkedList() {
   function deleteFromList(value) {
     let found = false;
     const intVal = parseInt(value);
+    if (isNaN(intVal)) {
+      displayErrorModal("Invalid input! Please enter a number.");
+      return;
+    }
     if (list.length === 0) {
-      displayPopup('List is already empty!', 'bg-blue-500');
+      displayErrorModal('List is already empty!');
       return;
     }
     const newList = [...list];
@@ -83,13 +94,17 @@ export default function LinkedList() {
       prevNode = currentNode;
       currentNode = newList[i + 1];
     }
-    found ? setList(newList) : displayPopup(`Value ${intVal} not found`, 'bg-red-500');
+    found ? setList(newList) : displayErrorModal(`Value ${intVal} not found`);
   }
 
   function searchInList(value) {
     const intVal = parseInt(value);
+    if (isNaN(intVal)) {
+      displayErrorModal("Invalid input! Please enter a number.");
+      return;
+    }
     if (list.length === 0) {
-      displayPopup('List is empty!', 'bg-blue-500');
+      displayErrorModal('List is empty!');
       return;
     }
     const newList = [...list];
@@ -127,19 +142,19 @@ export default function LinkedList() {
         </AnimatePresence>
 
         <div className="flex flex-col gap-2 sm:flex-row sm:gap-8 w-full sm:w-auto items-center justify-around p-2 sm:p-4 bg-emerald-100 dark:bg-gray-600 shadow-lg border-2 rounded-lg border-gray-500/50 dark:border-gray-50/50 transition-all duration-300" >
-          <IDSFrom
+          <IDSForm
             inputType="text"
             inputPlaceholder="Value to be Inserted"
             buttonText="Insert"
             onClick={insertIntoList}
           />
-          <IDSFrom
+          <IDSForm
             inputType="text"
             inputPlaceholder="Value to be Deleted"
             buttonText="Delete"
             onClick={deleteFromList}
           />
-          <IDSFrom
+          <IDSForm
             inputType="text"
             inputPlaceholder="Value to be Searched"
             buttonText="Search"
@@ -152,23 +167,22 @@ export default function LinkedList() {
         </div>
       </div>
 
-      <AnimatePresence
-        mode="wait"
-      >
-        {popup.isOpen && (
+      <AnimatePresence mode="wait" >
+        {errorModal.isOpen && (
           <motion.div
-            className={`fixed bottom-2 sm:bottom-8 w-[80%] left-[10%] sm:w-1/3 sm:left-1/3 flex items-center justify-center sm:text-xl p-1 sm:py-2 sm:px-4 rounded sm:rounded-lg shadow-sm sm:shadow-xl border border-gray-900 ${popup.color}`}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
+            className={`fixed bottom-2 sm:bottom-8 w-[80%] left-[10%] sm:w-1/3 sm:left-1/3 flex items-center justify-center sm:text-xl p-1 sm:py-2 sm:px-4 rounded sm:rounded-lg shadow-sm sm:shadow-xl border border-gray-700 dark:border-gray-100 bg-blue-500`}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
             transition={{
               type: "spring",
               stiffness: 150,
               damping: 20,
             }}
           >
-            {popup.text}
-          </motion.div >)}
+            {errorModal.text}
+          </motion.div >
+        )}
       </AnimatePresence>
     </>
   )
