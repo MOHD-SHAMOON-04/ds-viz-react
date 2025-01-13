@@ -94,7 +94,7 @@ export default function LinkedList() {
       prevNode = currentNode;
       currentNode = newList[i + 1];
     }
-    found ? setList(newList) : displayErrorModal(`Value ${intVal} not found`);
+    found ? setList(newList) : displayErrorModal("Value not found");
   }
 
   function searchInList(value) {

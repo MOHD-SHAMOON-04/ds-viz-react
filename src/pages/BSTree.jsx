@@ -72,7 +72,7 @@ function BSTree() {
         }
       }
     }
-    displayErrorModal(`Value ${valueTobeInserted} already exists`);
+    displayErrorModal("Value already exists");
   }
 
   function deleteNodeByBST(userInput) {
@@ -88,7 +88,7 @@ function BSTree() {
 
     function deleteNodeRecursively(node, value) {
       if (node == null) {
-        displayErrorModal(`Value ${value} not found`);
+        displayErrorModal("Value not found");
         return null;
       }
 
@@ -156,7 +156,7 @@ function BSTree() {
         currentNode = currentNode.leftChild;
       }
     }
-    displayErrorModal(`Value ${valueTobeSearched} not Found`);
+    displayErrorModal("Value not Found");
   }
 
   function resetSearch() {
